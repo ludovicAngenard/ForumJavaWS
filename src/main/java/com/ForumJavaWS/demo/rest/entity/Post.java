@@ -1,7 +1,12 @@
 package com.ForumJavaWS.demo.rest.entity;
 
-import javax.persistence.*;
 import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "post")
@@ -16,7 +21,6 @@ public class Post {
     private Date createdAt;
 
     private Date updatedAt;
-
 
     @ManyToOne
     private Topic topic;
