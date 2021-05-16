@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 
-@RequestMapping("report")
-public class Report {
+@RequestMapping("user")
+public class UserController {
 
 }
