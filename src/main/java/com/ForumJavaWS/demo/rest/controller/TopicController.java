@@ -1,12 +1,15 @@
 package com.ForumJavaWS.demo.rest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.ForumJavaWS.demo.rest.entity.Category;
+import javax.transaction.Transactional;
+
+import com.ForumJavaWS.demo.rest.entity.Post;
 import com.ForumJavaWS.demo.rest.entity.Topic;
-import com.ForumJavaWS.demo.rest.repository.CategoryRepository;
+import com.ForumJavaWS.demo.rest.payload.DTO.TopicDTO;
+import com.ForumJavaWS.demo.rest.repository.PostRepository;
 import com.ForumJavaWS.demo.rest.repository.TopicRepository;
-import com.ForumJavaWS.demo.rest.DTO.TopicDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,25 +18,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 
-@RequestMapping("topic")
 public class TopicController {
     @Autowired
     private TopicRepository topicRepository;
-    private CategoryRepository categoryRepository;
+    private PostRepository postRepository;
 
     @ResponseBody
-    @GetMapping("/categories/{categoryId}/topics")
-    public List<Topic> findTopicsByCategory(final @PathVariable("categoryId") Integer categoryid){
+    @GetMapping("/topics/{id}")
+    public Topic getTopicById(final @PathVariable("id") Long topicId){
         try{
-            Category category = categoryRepository.findById(categoryid).get();
-            List<Topic> topics = topicRepository.findByCategoryOrderByTitle(category);
-            return topics;
+            Topic topic = topicRepository.findById(topicId);
+            return topic;
         } catch (Exception e){
             return null;
         }
@@ -41,15 +41,14 @@ public class TopicController {
     }
 
     @ResponseBody
-    @GetMapping("/categories/{categoryId}/topics/{id}")
-    public Topic findTopicById(final @PathVariable("id") Integer topicId){
-        try{
-            Topic topic = topicRepository.findById(topicId).get();
-            return topic;
-        } catch (Exception e){
-            return null;
+    @GetMapping("/topics/{topicId}/Posts")
+    public List<Post> getPostsByTopic(final Topic topic){
+        try {
+            List<Post> posts = postRepository.findByTopicOrderByCreatedAt(topic);
+            return posts;
+        } catch(Exception e) {
+            return new ArrayList<Post>();
         }
-
     }
 
     @PostMapping("/topic")
@@ -62,16 +61,17 @@ public class TopicController {
 
     // TODO
     // ONLY HIS CREATOR CAN DELETE THE TOPIC IF THERE IS ONLY ONE POST
-    @DeleteMapping("/topics/{id}")
-    public void deleteTopic(final @PathVariable("id") Integer topicId){
+   // @Transactional // is used for indicating a method run inside a database transaction.
+    @DeleteMapping("/topic/{id}")
+    public void deleteTopic(final @PathVariable("id") Long topicId){
         topicRepository.deleteById(topicId);
     }
 
     // TODO
     // EDITED ONLY BY A MODERATOR OR AN ADMIN
-    @PutMapping("/topics/{id}")
-    public Topic editTopic(@PathVariable("id") Integer id, @RequestBody TopicDTO topicDTO ){
-        Topic topic = this.topicRepository.getOne(id);
+    @PutMapping("/topic/{id}")
+    public Topic editTopic(@PathVariable("id") Long id, @RequestBody TopicDTO topicDTO ){
+        Topic topic = this.topicRepository.findById(id);
         topic.setLocked(topicDTO.getLocked());
         return this.topicRepository.save(topic);
     }

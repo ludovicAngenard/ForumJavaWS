@@ -21,6 +21,9 @@ public class Topic {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Category category;
+
     public Long getId() {
         return id;
     }
@@ -43,5 +46,13 @@ public class Topic {
 
     public void setLocked(Boolean locked) {
         this.locked = locked;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

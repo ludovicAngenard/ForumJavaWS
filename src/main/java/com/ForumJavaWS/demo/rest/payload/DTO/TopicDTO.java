@@ -1,18 +1,20 @@
+package com.ForumJavaWS.demo.rest.payload.DTO;
+
 public class TopicDTO {
-    private Integer id;
+    private Long id;
     private Boolean locked;
 
     public TopicDTO(){}
 
-    public TopicDTO(Integer id, Boolean locked){
+    public TopicDTO(Long id, Boolean locked){
         this.id = id;
         this.locked = locked;
     }
 
-    public void setId(Integer id){
+    public void setId(Long id){
         this.id = id;
     }
-    public Integer getId(){
+    public Long getId(){
         return id;
     }
     public void setLocked(Boolean locked){

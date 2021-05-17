@@ -11,4 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface TopicRepository extends JpaRepository<Topic, Integer> {
 
     public List<Topic> findByCategoryOrderByTitle(Category category);
+    public Topic findById(Long id);
+    public void deleteById(Long id);
+    public List<Topic>findByCategory(Category category);
 }
