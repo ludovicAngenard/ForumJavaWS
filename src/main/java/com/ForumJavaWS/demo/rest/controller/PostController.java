@@ -22,8 +22,8 @@ public class PostController {
     private PostRepository postRepository;
 
     @ResponseBody
-    @GetMapping("/posts/{postId}")
-    public Post getPostById(final @PathVariable("id") Long postId){
+    @GetMapping("/post/{postId}")
+    public Post getPostById(final @PathVariable("postId") Long postId){
         Post post = postRepository.findById(postId);
         return post;
     }
@@ -40,6 +40,7 @@ public class PostController {
         Post post = this.postRepository.findById(id);
         post.setUpdatedAt(postDTO.getUpdatedAt());
         post.setContent(postDTO.getContent());
+        post.setTopic(postDTO.getTopic());
         return this.postRepository.save(post);
     }
 

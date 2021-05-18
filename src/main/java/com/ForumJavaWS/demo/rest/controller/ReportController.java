@@ -21,7 +21,7 @@ public class ReportController {
 
     @ResponseBody
     @GetMapping("/reports/{reportId}")
-    public Report getReportById(final @PathVariable("id") Long reportId){
+    public Report getReportById(final @PathVariable("reportId") Long reportId){
         Report report = reportRepository.findById(reportId);
         return report;
     }

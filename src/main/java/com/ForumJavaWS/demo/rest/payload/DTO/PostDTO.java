@@ -2,15 +2,19 @@ package com.ForumJavaWS.demo.rest.payload.DTO;
 
 import java.util.Date;
 
+import com.ForumJavaWS.demo.rest.entity.Topic;
+
 public class PostDTO {
 
     private Long id;
     private String content;
     private Date updatedAt;
+    private Topic topic;
 
-    public PostDTO(String content, Date updatedAt){
+    public PostDTO(String content, Date updatedAt, Topic topic){
         this.content = content;
         this.updatedAt = updatedAt;
+        this.topic = topic;
     }
     public String getContent() {
         return content;
@@ -32,6 +36,12 @@ public class PostDTO {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+    public Topic getTopic() {
+        return topic;
+    }
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
 }

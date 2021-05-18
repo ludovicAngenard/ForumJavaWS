@@ -1,9 +1,16 @@
 package com.ForumJavaWS.demo.rest.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -11,7 +18,7 @@ import javax.persistence.Table;
 public class Topic {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String title;
@@ -23,6 +30,9 @@ public class Topic {
 
     @ManyToOne
     private Category category;
+
+    @OneToMany( cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts  = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -55,4 +65,14 @@ public class Topic {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+
 }

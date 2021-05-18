@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-
+// USELESS CONTROLLER 
 public class UserController {
     @Autowired
     private UserRepository userRepository;
