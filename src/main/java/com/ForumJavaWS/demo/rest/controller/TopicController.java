@@ -29,7 +29,7 @@ public class TopicController {
     private PostRepository postRepository;
 
     @ResponseBody
-    @GetMapping("/topics/{id}")
+    @GetMapping("/topic/{id}")
     public Topic getTopicById(final @PathVariable("id") Long topicId){
         try{
             Topic topic = topicRepository.findById(topicId);
@@ -41,7 +41,7 @@ public class TopicController {
     }
 
     @ResponseBody
-    @GetMapping("/topics/{topicId}/Posts")
+    @GetMapping("/topic/{topicId}/Post")
     public List<Post> getPostsByTopic(final Topic topic){
         try {
             List<Post> posts = postRepository.findByTopicOrderByCreatedAt(topic);
@@ -62,10 +62,12 @@ public class TopicController {
     // TODO
     // ONLY HIS CREATOR CAN DELETE THE TOPIC IF THERE IS ONLY ONE POST
    // @Transactional // is used for indicating a method run inside a database transaction.
-    @DeleteMapping("/topic/{id}")
-    public void deleteTopic(final @PathVariable("id") Long topicId){
-        topicRepository.deleteById(topicId);
-    }
+   @DeleteMapping("/topic/{id}")
+   public void deleteTopic(final @PathVariable("id") Long topicId){
+       if (topicRepository.findById(topicId).getPosts().size() == 1){
+           topicRepository.deleteById(topicId);
+       }
+   }
 
     // TODO
     // EDITED ONLY BY A MODERATOR OR AN ADMIN
