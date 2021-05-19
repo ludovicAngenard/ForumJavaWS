@@ -11,6 +11,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
     public List<Post> findByTopicOrderById(Topic topic);
+
     public Post findById(Long id);
+
     public List<Post> findByTopicOrderByCreatedAt(Topic topic);
+
+    public Topic findTopicById(Long id);
 }

@@ -1,10 +1,13 @@
 package com.ForumJavaWS.demo.rest.controller;
 
 import java.util.Date;
+import java.util.Optional;
 
 import com.ForumJavaWS.demo.rest.entity.Post;
+import com.ForumJavaWS.demo.rest.entity.Topic;
 import com.ForumJavaWS.demo.rest.payload.DTO.PostDTO;
 import com.ForumJavaWS.demo.rest.repository.PostRepository;
+import com.ForumJavaWS.demo.rest.repository.TopicRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,23 +23,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
     @Autowired
     private PostRepository postRepository;
+    private TopicRepository topicRepository;
 
     @ResponseBody
     @GetMapping("/post/{postId}")
-    public Post getPostById(final @PathVariable("postId") Long postId){
+    public Post getPostById(final @PathVariable("postId") Long postId) {
         Post post = postRepository.findById(postId);
         return post;
     }
 
-    @PostMapping("/post")
-    public Post addPost(@RequestBody Post post){
-        Date date = new Date();
-        post.setCreatedAt(date);
-        return postRepository.save(post);
-    }
+    // @PostMapping("/{idTopic}/post")
+    // public Post addPost(@PathVariable("idTopic") Long idTopic, @RequestBody Post
+    // post) {
+    // Topic topic = topicRepository.findById(idTopic);
+    // topic.getPosts().add(post);
+    // Date date = new Date();
+    // post.setCreatedAt(date);
+    // return postRepository.save(post);//
+    // }
 
     @PutMapping("/post/{id}")
-    public Post editTopic(@PathVariable("id") Long id, @RequestBody PostDTO postDTO ){
+    public Post editPost(@PathVariable("id") Long id, @RequestBody PostDTO postDTO) {
         Post post = this.postRepository.findById(id);
         post.setUpdatedAt(postDTO.getUpdatedAt());
         post.setContent(postDTO.getContent());

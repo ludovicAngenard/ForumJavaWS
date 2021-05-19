@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ForumJavaWS.demo.rest.entity.Category;
+import com.ForumJavaWS.demo.rest.entity.Post;
 import com.ForumJavaWS.demo.rest.entity.Topic;
 import com.ForumJavaWS.demo.rest.repository.CategoryRepository;
 import com.ForumJavaWS.demo.rest.repository.TopicRepository;
@@ -25,14 +26,14 @@ public class CategoryController {
 
     @ResponseBody
     @GetMapping("/category")
-    public List<Category> getCategories(){
+    public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
 
     @ResponseBody
     @GetMapping("/category/{id}")
-    public Category getCategoryById(final @PathVariable("id") Long categoryId){
-        try{
+    public Category getCategoryById(final @PathVariable("id") Long categoryId) {
+        try {
             return categoryRepository.findById(categoryId);
         } catch (Exception e) {
             return null;
@@ -41,26 +42,32 @@ public class CategoryController {
 
     @ResponseBody
     @GetMapping("/category/{categoryId}/topic")
-    public List<Topic> getTopicsByCategory(final Category category){
+    public List<Topic> getTopicsByCategory(final Category category) {
         try {
             System.out.println(category);
             List<Topic> topics = category.getTopics();
             System.out.println("Topics : " + topics);
             return topics;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             return new ArrayList<Topic>();
         }
     }
 
     @PostMapping("/category/{categoryId}")
     @ResponseBody
-    public ResponseEntity<Category> addTopicToCategory(final @PathVariable("categoryId") Long id, final @RequestBody Topic topic) {
-      Category category = categoryRepository.findById(id);
-      category.getTopics().add(topic);
-      categoryRepository.save(category);
-      return ResponseEntity.ok(category);
-      // TODO exercice 7
+    public ResponseEntity<Category> addTopicToCategory(final @PathVariable("categoryId") Long id,
+            final @RequestBody Topic topic) {
+        // System.out.println(topic.getTitle());
+        System.out.println(topic.getId());
+        Category category = categoryRepository.findById(id);
+        category.getTopics().add(topic);
+        // Post newPost = new Post();
+        // newPost.setContent("jesuis un autre test");
+        // topic.getPosts().add(newPost);
+        categoryRepository.save(category);
+
+        return ResponseEntity.ok(category);
 
     }
 
