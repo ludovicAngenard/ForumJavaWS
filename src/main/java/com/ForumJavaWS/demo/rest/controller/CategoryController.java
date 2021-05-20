@@ -44,25 +44,27 @@ public class CategoryController {
     // @ResponseBody
     // @GetMapping("/category/{categoryId}/topic")
     // public List<Topic> getTopicsByCategory(final Category category) {
-    //     try {
-    //         System.out.println(category);
-    //         List<Topic> topics = category.getTopics();
-    //         System.out.println("Topics : " + topics);
-    //         return topics;
+    // try {
+    // System.out.println(category);
+    // List<Topic> topics = category.getTopics();
+    // System.out.println("Topics : " + topics);
+    // return topics;
 
-    //     } catch (Exception e) {
-    //         return new ArrayList<Topic>();
-    //     }
+    // } catch (Exception e) {
+    // return new ArrayList<Topic>();
+    // }
     // }
 
+    // il manque l'ID du topic et l'ID
     @PostMapping("/category/{categoryId}")
     @ResponseBody
-    public Topic addTopicToCategory(final @PathVariable("categoryId") Long id,final @RequestBody Topic topic) {
+    public Topic addTopicToCategory(final @PathVariable("categoryId") Long id, final @RequestBody Topic topic) {
         // System.out.println(topic.getTitle());
         System.out.println(topic.getId());
         Category category = categoryRepository.findById(id);
-        if (topic.getTitle() != null){
+        if (topic.getTitle() != null) {
             category.getTopics().add(topic);
+            topic.setLocked(false);
             topic.setCategory(category);
 
             topic.getPosts().forEach(post -> {
@@ -79,7 +81,6 @@ public class CategoryController {
         } else {
             return null;
         }
-
 
     }
 

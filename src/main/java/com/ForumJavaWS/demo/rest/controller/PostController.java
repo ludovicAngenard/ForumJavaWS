@@ -32,20 +32,11 @@ public class PostController {
         return post;
     }
 
-    // @PostMapping("/{idTopic}/post")
-    // public Post addPost(@PathVariable("idTopic") Long idTopic, @RequestBody Post
-    // post) {
-    // Topic topic = topicRepository.findById(idTopic);
-    // topic.getPosts().add(post);
-    // Date date = new Date();
-    // post.setCreatedAt(date);
-    // return postRepository.save(post);//
-    // }
-
     @PutMapping("/post/{id}")
     public Post editPost(@PathVariable("id") Long id, @RequestBody PostDTO postDTO) {
         Post post = this.postRepository.findById(id);
-        post.setUpdatedAt(postDTO.getUpdatedAt());
+        Date date = new Date();
+        post.setUpdatedAt(date);
         post.setContent(postDTO.getContent());
         post.setTopic(postDTO.getTopic());
         return this.postRepository.save(post);
