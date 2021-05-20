@@ -41,16 +41,16 @@ public class TopicController {
 
     }
 
-    @ResponseBody
-    @GetMapping("/topic/{topicId}/Post")
-    public List<Post> getPostsByTopic(final Topic topic) {
-        try {
-            List<Post> posts = postRepository.findByTopicOrderByCreatedAt(topic);
-            return posts;
-        } catch (Exception e) {
-            return new ArrayList<Post>();
-        }
-    }
+    // @ResponseBody
+    // @GetMapping("/topic/{topicId}/Post")
+    // public List<Post> getPostsByTopic(final Topic topic) {
+    //     try {
+    //         List<Post> posts = postRepository.findByTopicOrderByCreatedAt(topic);
+    //         return posts;
+    //     } catch (Exception e) {
+    //         return new ArrayList<Post>();
+    //     }
+    // }
 
     @PostMapping("/topic/{idTopic}")
     public Post addPostToTopic(@PathVariable("idTopic") Long idTopic, @RequestBody Post post) {
@@ -60,15 +60,6 @@ public class TopicController {
         post.setCreatedAt(date);
         return postRepository.save(post);
     }
-
-    @PostMapping("/topic")
-    public Topic addTopic(@RequestBody Topic topic) {
-        // TODO
-        // CHECK IF HE HAS A TITLE
-        // CREATE A POST
-        return topicRepository.save(topic);
-    }
-
     // TODO
     // ONLY HIS CREATOR CAN DELETE THE TOPIC IF THERE IS ONLY ONE POST
     // @Transactional // is used for indicating a method run inside a database
@@ -79,7 +70,6 @@ public class TopicController {
             topicRepository.deleteById(topicId);
         }
     }
-
     // TODO
     // EDITED ONLY BY A MODERATOR OR AN ADMIN
     @PutMapping("/topic/{id}")

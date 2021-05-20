@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "post")
 public class Post {
@@ -24,6 +26,7 @@ public class Post {
     private Date updatedAt;
 
     @ManyToOne
+    @JsonBackReference
     private Topic topic;
 
     @ManyToOne

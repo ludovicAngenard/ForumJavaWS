@@ -1,6 +1,7 @@
 package com.ForumJavaWS.demo.rest.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.ForumJavaWS.demo.rest.entity.Category;
@@ -40,34 +41,45 @@ public class CategoryController {
         }
     }
 
-    @ResponseBody
-    @GetMapping("/category/{categoryId}/topic")
-    public List<Topic> getTopicsByCategory(final Category category) {
-        try {
-            System.out.println(category);
-            List<Topic> topics = category.getTopics();
-            System.out.println("Topics : " + topics);
-            return topics;
+    // @ResponseBody
+    // @GetMapping("/category/{categoryId}/topic")
+    // public List<Topic> getTopicsByCategory(final Category category) {
+    //     try {
+    //         System.out.println(category);
+    //         List<Topic> topics = category.getTopics();
+    //         System.out.println("Topics : " + topics);
+    //         return topics;
 
-        } catch (Exception e) {
-            return new ArrayList<Topic>();
-        }
-    }
+    //     } catch (Exception e) {
+    //         return new ArrayList<Topic>();
+    //     }
+    // }
 
     @PostMapping("/category/{categoryId}")
     @ResponseBody
-    public ResponseEntity<Category> addTopicToCategory(final @PathVariable("categoryId") Long id,
-            final @RequestBody Topic topic) {
+    public Topic addTopicToCategory(final @PathVariable("categoryId") Long id,final @RequestBody Topic topic) {
         // System.out.println(topic.getTitle());
         System.out.println(topic.getId());
         Category category = categoryRepository.findById(id);
-        category.getTopics().add(topic);
-        // Post newPost = new Post();
-        // newPost.setContent("jesuis un autre test");
-        // topic.getPosts().add(newPost);
-        categoryRepository.save(category);
+        if (topic.getTitle() != null){
+            category.getTopics().add(topic);
+            topic.setCategory(category);
 
-        return ResponseEntity.ok(category);
+            topic.getPosts().forEach(post -> {
+                Date date = new Date();
+                post.setTopic(topic);
+                post.setCreatedAt(date);
+            });
+            // Post newPost = new Post();
+            // newPost.setContent("jesuis un autre test");
+            // topic.getPosts().add(newPost);
+            categoryRepository.save(category);
+
+            return topic;
+        } else {
+            return null;
+        }
+
 
     }
 
