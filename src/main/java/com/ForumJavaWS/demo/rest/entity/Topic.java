@@ -34,7 +34,7 @@ public class Topic {
     @JsonIgnore
     private Category category;
 
-    @OneToMany( cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany( mappedBy="topic",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts  = new ArrayList<>();
 
     public Long getId() {

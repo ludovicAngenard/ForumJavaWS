@@ -25,8 +25,7 @@ public class Category {
     private String name;
 
 
-    @OneToMany( cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @OneToMany(mappedBy="category", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Topic> topics  = new ArrayList<>();
 
     public void setId(Long id) {

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "report")
 public class Report {
@@ -18,7 +20,12 @@ public class Report {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
+
+    @ManyToOne
+    @JsonIgnore
+    private Post post;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
@@ -39,4 +46,30 @@ public class Report {
     public Long getId() {
         return id;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public ReportReason getReason() {
+        return reason;
+    }
+
+    public void setReason(ReportReason reason) {
+        this.reason = reason;
+    }
+
+
 }
