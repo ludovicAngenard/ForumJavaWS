@@ -1,8 +1,6 @@
 package com.ForumJavaWS.demo.rest.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 import com.ForumJavaWS.demo.rest.entity.Category;
@@ -14,9 +12,7 @@ import com.ForumJavaWS.demo.rest.repository.TopicRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TopicController {
     @Autowired
     private TopicRepository topicRepository;
+    @Autowired
     private PostRepository postRepository;
+
     @ResponseBody
     @GetMapping("/topic/{topicId}")
     public Topic getTopicById(final @PathVariable("topicId") Long topicId) {
@@ -45,12 +43,12 @@ public class TopicController {
     }
 
 
-    // @GetMapping("/topic/{topicId}/post")
-    // public Page<Post> getPostsByTopic(final @PathVariable("topicId") Long topicId, Pageable pageable) {
-    //     Topic topic = topicRepository.findById(topicId);
-    //     Page<Post> posts =  postRepository.findByTopicOrderByCreatedAt(topic, PageRequest.of(0, 10));
-    //     return posts;
-    // }
+    @GetMapping("/topic/{topicId}/posts")
+    public Page<Post> getPostsByTopic(final @PathVariable("topicId") Long topicId, Pageable pageable) {
+        Topic topic = topicRepository.findById(topicId);// PageRequest.of(0, 10)
+        Page<Post> posts =  postRepository.findByTopicOrderByCreatedAt(topic, pageable);
+        return posts;
+    }
 
     @PostMapping("/topic/{idTopic}")
     public Post addPostToTopic(@PathVariable("idTopic") Long idTopic, @RequestBody Post post) {
