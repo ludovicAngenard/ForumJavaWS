@@ -11,7 +11,6 @@ import com.ForumJavaWS.demo.rest.repository.CategoryRepository;
 import com.ForumJavaWS.demo.rest.repository.TopicRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CategoryController {
-    // READ ONLY
+public class CategoryController {  // READ ONLY
+
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -56,15 +55,12 @@ public class CategoryController {
     // }
 
     @PostMapping("/category/{categoryId}")
-    @ResponseBody
     public Topic addTopicToCategory(final @PathVariable("categoryId") Long id,final @RequestBody Topic topic) {
-        // System.out.println(topic.getTitle());
-        System.out.println(topic.getId());
         Category category = categoryRepository.findById(id);
         if (topic.getTitle() != null){
             category.getTopics().add(topic);
+            topic.setLocked(false);
             topic.setCategory(category);
-
             topic.getPosts().forEach(post -> {
                 Date date = new Date();
                 post.setTopic(topic);

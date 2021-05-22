@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "report")
 public class Report {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
