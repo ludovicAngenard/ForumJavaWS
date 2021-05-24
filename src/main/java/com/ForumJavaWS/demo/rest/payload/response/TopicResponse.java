@@ -1,12 +1,12 @@
-package com.ForumJavaWS.demo.rest.payload.DTO;
+package com.ForumJavaWS.demo.rest.payload.response;
 
-public class TopicDTO {
+public class TopicResponse {
     private Long id;
     private Boolean locked;
 
-    public TopicDTO(){}
+    public TopicResponse(){}
 
-    public TopicDTO(Long id, Boolean locked){
+    public TopicResponse(Long id, Boolean locked){
         this.id = id;
         this.locked = locked;
     }

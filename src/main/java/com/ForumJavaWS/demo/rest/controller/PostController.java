@@ -3,7 +3,7 @@ package com.ForumJavaWS.demo.rest.controller;
 import com.ForumJavaWS.demo.rest.entity.Post;
 import com.ForumJavaWS.demo.rest.entity.Report;
 import com.ForumJavaWS.demo.rest.entity.Topic;
-import com.ForumJavaWS.demo.rest.payload.DTO.PostDTO;
+import com.ForumJavaWS.demo.rest.payload.response.PostResponse;
 import com.ForumJavaWS.demo.rest.repository.PostRepository;
 import com.ForumJavaWS.demo.rest.repository.ReportRepository;
 
@@ -44,11 +44,11 @@ public class PostController {
     }
 
     @PutMapping("/post/{id}")
-    public Post editPost(@PathVariable("id") Long id, @RequestBody PostDTO postDTO) {
+    public Post editPost(@PathVariable("id") Long id, @RequestBody PostResponse postResponse) {
         Post post = this.postRepository.findById(id);
-        post.setUpdatedAt(postDTO.getUpdatedAt());
-        post.setContent(postDTO.getContent());
-        post.setTopic(postDTO.getTopic());
+        post.setUpdatedAt(postResponse.getUpdatedAt());
+        post.setContent(postResponse.getContent());
+        post.setTopic(postResponse.getTopic());
         return this.postRepository.save(post);
     }
 
