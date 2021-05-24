@@ -1,22 +1,26 @@
 package com.ForumJavaWS.demo.rest.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "post")
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String content;
@@ -26,11 +30,15 @@ public class Post {
     private Date updatedAt;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     private Topic topic;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
+
+    @OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Report> reports;
 
     public void setId(Long id) {
         this.id = id;
@@ -71,4 +79,22 @@ public class Post {
     public void setTopic(Topic topic) {
         this.topic = topic;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
+
 }

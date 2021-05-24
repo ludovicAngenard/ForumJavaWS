@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 
@@ -27,13 +28,17 @@ public class ReportController {
     }
 
     @ResponseBody
-    @GetMapping("/reports")
-    public List<Report> getReportsById(){
+    @GetMapping("/report")
+    public List<Report> getReports(){
         return reportRepository.findAll();
     }
 
     @PostMapping("/report")
     public Report addreport(@RequestBody Report report){
-        return reportRepository.save(report);
+        if (report.getPost() != null){
+            return reportRepository.save(report);
+        } else {
+            throw new HttpClientErrorException(null);
+        }
     }
 }
