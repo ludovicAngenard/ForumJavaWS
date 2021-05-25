@@ -63,7 +63,8 @@ public class AuthController {
       String jwt = jwtUtils.generateJwtToken(authentication);
 
       UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-      List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
+      List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+          .collect(Collectors.toList());
 
       return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
     } catch (AuthenticationException e) {
@@ -73,6 +74,9 @@ public class AuthController {
 
   @PostMapping("register")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    if (signUpRequest.getEmail() == null) {
+      return ResponseEntity.ok().body(new MessageResponse(ApiMessage.ERROR_LOGIN_FAILED, "veuillez entrer un email"));
+    }
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity.ok()
           .body(new MessageResponse(ApiMessage.ERROR_REGISTER_EMAIL_TAKEN, "L'adresse email est déjà prise"));

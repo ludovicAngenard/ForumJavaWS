@@ -29,32 +29,37 @@ public class ForumJavaWsApplication {
 	@Autowired
 	PasswordEncoder encoder;
 
-	public ForumJavaWsApplication(CategoryRepository categoryRepository, UserRepository userRepository, RoleRepository roleRepository){
+	public ForumJavaWsApplication(CategoryRepository categoryRepository, UserRepository userRepository,
+			RoleRepository roleRepository) {
 		this.categoryRepository = categoryRepository;
 		this.roleRepository = roleRepository;
 		this.userRepository = userRepository;
 	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(ForumJavaWsApplication.class, args);
 	}
 
+	@PostConstruct
+	void init() {
 
-	@PostConstruct void init(){
-		Role adminRole = roleRepository.save(new Role(EnumRole.ROLE_ADMIN));
-		roleRepository.save(new Role(EnumRole.ROLE_USER));
+		if (userRepository.findAll().size() == 0) {
+			Role adminRole = roleRepository.save(new Role(EnumRole.ROLE_ADMIN));
+			roleRepository.save(new Role(EnumRole.ROLE_USER));
+			roleRepository.save(new Role(EnumRole.ROLE_MODERATOR));
 
-		// Création d'un utilisateur spécial ayant le rôle d'Administrateur,
-		// seule personne habilitée à créer par la suite des entités comme Artist et Album
-		User admin = new User();
-		admin.setEmail("ludovic.angenard@campus.academy");
-		admin.setPassword(encoder.encode("123456"));
-		Set<Role> roles = new HashSet<>();
-		roles.add(adminRole);
-		admin.setRoles(roles);
-		userRepository.save(admin);
+			User admin = new User();
+			admin.setEmail("ludovic.angenard@campus.academy");
+			admin.setPassword(encoder.encode("123456"));
+			Set<Role> roles = new HashSet<>();
+			roles.add(adminRole);
+			admin.setRoles(roles);
+			userRepository.save(admin);
+		}
 
-		List<String> themes = new ArrayList<>(Arrays.asList("Mathématiques", "Informatique", "Astronomie", "Ingénierie"));
-		if (categoryRepository.findAll().size() <= 3){
+		List<String> themes = new ArrayList<>(
+				Arrays.asList("Mathématiques", "Informatique", "Astronomie", "Ingénierie"));
+		if (categoryRepository.findAll().size() <= 3) {
 			themes.forEach(theme -> {
 				Category newCategory = new Category();
 				newCategory.setName(theme);
