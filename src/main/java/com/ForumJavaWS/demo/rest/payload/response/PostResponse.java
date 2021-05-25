@@ -1,17 +1,17 @@
-package com.ForumJavaWS.demo.rest.payload.DTO;
+package com.ForumJavaWS.demo.rest.payload.response;
 
 import java.util.Date;
 
 import com.ForumJavaWS.demo.rest.entity.Topic;
 
-public class PostDTO {
+public class PostResponse {
 
     private Long id;
     private String content;
     private Date updatedAt;
     private Topic topic;
 
-    public PostDTO(String content, Date updatedAt, Topic topic){
+    public PostResponse(String content, Date updatedAt, Topic topic){
         this.content = content;
         this.updatedAt = updatedAt;
         this.topic = topic;

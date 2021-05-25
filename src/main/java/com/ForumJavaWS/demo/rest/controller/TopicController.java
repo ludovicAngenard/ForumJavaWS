@@ -5,7 +5,7 @@ import java.util.Date;
 import com.ForumJavaWS.demo.rest.entity.Category;
 import com.ForumJavaWS.demo.rest.entity.Post;
 import com.ForumJavaWS.demo.rest.entity.Topic;
-import com.ForumJavaWS.demo.rest.payload.DTO.TopicDTO;
+import com.ForumJavaWS.demo.rest.payload.response.TopicResponse;
 import com.ForumJavaWS.demo.rest.repository.PostRepository;
 import com.ForumJavaWS.demo.rest.repository.TopicRepository;
 
@@ -72,9 +72,10 @@ public class TopicController {
     // TODO
     // EDITED ONLY BY A MODERATOR OR AN ADMIN
     @PutMapping("/topic/{id}")
-    public Topic editTopic(@PathVariable("id") Long id, @RequestBody TopicDTO topicDTO) {
+    public Topic editTopic(@PathVariable("id") Long id, @RequestBody TopicResponse topicResponse) {
         Topic topic = this.topicRepository.findById(id);
-        topic.setLocked(true);
+
+        topic.setLocked(topicResponse.getLocked());
         return this.topicRepository.save(topic);
     }
 }
