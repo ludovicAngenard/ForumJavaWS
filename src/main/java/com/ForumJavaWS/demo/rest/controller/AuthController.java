@@ -95,11 +95,23 @@ public class AuthController {
   }
 
   @PostMapping("register/moderator")
-  public ResponseEntity<?> adminAddModerator(@Valid @RequestBody SignupRequest signUpRequest) {
+  public ResponseEntity<?> admin(@Valid @RequestBody SignupRequest signUpRequest) {
     if (UserDetailsServiceImpl.isAdmin()) {
+      if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        return ResponseEntity.ok()
+            .body(new MessageResponse(ApiMessage.ERROR_REGISTER_EMAIL_TAKEN, "L'adresse email est déjà prise"));
+      }
+      User user = new User();
+      user.setEmail(signUpRequest.getEmail());
+      user.setPassword(encoder.encode(signUpRequest.getPassword()));
+      Set<Role> roles = new HashSet<Role>();
+      Optional<Role> optional = roleRepository.findByName(EnumRole.ROLE_MODERATOR);
+      roles.add(optional.get());
+      user.setRoles(roles);
+      userRepository.save(user);
       return ResponseEntity.ok(new MessageResponse(ApiMessage.REGISTER_OK, "Modérateur inscrit avec succès !"));
     } else {
-      throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Sorry but no!");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
   }
 
