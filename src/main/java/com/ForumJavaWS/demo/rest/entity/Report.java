@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -24,7 +25,7 @@ public class Report {
     private User user;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonBackReference
     private Post post;
 
     @Enumerated(EnumType.STRING)

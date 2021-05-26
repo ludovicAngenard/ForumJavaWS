@@ -53,7 +53,7 @@ public class PostController {
         return this.postRepository.save(post);
     }
 
-    @GetMapping("/post/{postId}/Reports")
+    @GetMapping("/post/{postId}/reports")
     public Page<Report> getReportsByPost(final @PathVariable("postId") Long postId, Pageable pageable) {
         Post post = postRepository.findById(postId);
         return reportRepository.findByPostOrderById(post, pageable);

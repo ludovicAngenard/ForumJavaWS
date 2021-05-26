@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ForumJavaWS.demo.rest.entity.Report;
 import com.ForumJavaWS.demo.rest.repository.ReportRepository;
+import com.ForumJavaWS.demo.rest.security.service.UserDetailsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 
@@ -21,7 +21,7 @@ public class ReportController {
     private ReportRepository reportRepository;
 
     @ResponseBody
-    @GetMapping("/reports/{reportId}")
+    @GetMapping("/report/{reportId}")
     public Report getReportById(final @PathVariable("reportId") Long reportId){
         Report report = reportRepository.findById(reportId);
         return report;
@@ -34,11 +34,13 @@ public class ReportController {
     }
 
     @PostMapping("/report")
-    public Report addreport(@RequestBody Report report){
+    public Report addreport(@RequestBody Report report) throws Exception{
+        System.out.println("report : " + report.getPost());
         if (report.getPost() != null){
+            report.setUser(UserDetailsServiceImpl.getCurrentUser());
             return reportRepository.save(report);
         } else {
-            throw new HttpClientErrorException(null);
+            throw new Exception("Le post que vous signalez n'existe pas.");
         }
     }
 }
