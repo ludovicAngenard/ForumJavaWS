@@ -5,9 +5,11 @@ import java.util.Date;
 import com.ForumJavaWS.demo.rest.entity.Category;
 import com.ForumJavaWS.demo.rest.entity.Post;
 import com.ForumJavaWS.demo.rest.entity.Topic;
+import com.ForumJavaWS.demo.rest.entity.User;
 import com.ForumJavaWS.demo.rest.payload.response.TopicResponse;
 import com.ForumJavaWS.demo.rest.repository.PostRepository;
 import com.ForumJavaWS.demo.rest.repository.TopicRepository;
+import com.ForumJavaWS.demo.rest.security.service.UserDetailsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,7 +40,6 @@ public class TopicController {
         } catch (Exception e) {
             return null;
         }
-
     }
 
     @GetMapping("/topic/{topicId}/posts")
@@ -59,18 +60,17 @@ public class TopicController {
         return post;
     }
 
-    // TODO
-    // ONLY HIS CREATOR CAN DELETE THE TOPIC IF THERE IS ONLY ONE POST
     @DeleteMapping("/topic/{id}")
     public void deleteTopic(final @PathVariable("id") Long topicId) {
         Topic topic = topicRepository.findById(topicId);
-        Category parentCategory = topic.getCategory();
-        parentCategory.getTopics().remove(topic);
-        topicRepository.delete(topic);
+        User creator = topic.getPosts().get(1).getUser();
+        if ( creator == UserDetailsServiceImpl.getCurrentUser() && topic.getPosts().size() == 1){
+            Category parentCategory = topic.getCategory();
+            parentCategory.getTopics().remove(topic);
+            topicRepository.delete(topic);
+        }
     }
 
-    // TODO
-    // EDITED ONLY BY A MODERATOR OR AN ADMIN
     @PutMapping("/topic/{id}")
     public Topic editTopic(@PathVariable("id") Long id, @RequestBody TopicResponse topicResponse) {
         Topic topic = this.topicRepository.findById(id);
