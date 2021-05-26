@@ -31,6 +31,7 @@ public class TopicController {
     @Autowired
     private PostRepository postRepository;
 
+    // Fonction permettant de récuperer un topic et ses posts
     @ResponseBody
     @GetMapping("/topic/{topicId}")
     public Topic getTopicById(final @PathVariable("topicId") Long topicId) {
@@ -42,6 +43,7 @@ public class TopicController {
         }
     }
 
+    // Fonction permettant de récupérer les posts d'un topic de façon paginée
     @GetMapping("/topic/{topicId}/posts")
     public Page<Post> getPostsByTopic(final @PathVariable("topicId") Long topicId, Pageable pageable) {
         Topic topic = topicRepository.findById(topicId);// PageRequest.of(0, 10)
@@ -49,6 +51,7 @@ public class TopicController {
         return posts;
     }
 
+    // Fonction permettant d'ajouter un post a un topic
     @PostMapping("/topic/{idTopic}")
     public Post addPostToTopic(@PathVariable("idTopic") Long idTopic, @RequestBody Post post) {
         Topic topic = topicRepository.findById(idTopic);
@@ -60,17 +63,20 @@ public class TopicController {
         return post;
     }
 
+    // Fonction permettant de supprimer un topic si c'est le créateur qui le fait et
+    // qu'il n'y a qu'un seul post
     @DeleteMapping("/topic/{id}")
     public void deleteTopic(final @PathVariable("id") Long topicId) {
         Topic topic = topicRepository.findById(topicId);
         User creator = topic.getPosts().get(1).getUser();
-        if ( creator == UserDetailsServiceImpl.getCurrentUser() && topic.getPosts().size() == 1){
+        if (creator == UserDetailsServiceImpl.getCurrentUser() && topic.getPosts().size() == 1) {
             Category parentCategory = topic.getCategory();
             parentCategory.getTopics().remove(topic);
             topicRepository.delete(topic);
         }
     }
 
+    // Fonction permettant de modifier un topic
     @PutMapping("/topic/{id}")
     public Topic editTopic(@PathVariable("id") Long id, @RequestBody TopicResponse topicResponse) {
         Topic topic = this.topicRepository.findById(id);

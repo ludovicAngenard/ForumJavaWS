@@ -19,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -51,23 +50,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
+  // Cette fonction permet de gérer une grosse partie des requetes possible en
+  // fonction du rôle de l'utilsateur connecté,
+  // dans certains cas, ils sont présent dans le controller en question
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-        .antMatchers("/auth/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/topic/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/post/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/category/**").permitAll()
+        .antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/topic/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/post/**").permitAll().antMatchers(HttpMethod.GET, "/category/**").permitAll()
         .antMatchers(HttpMethod.GET, "/report/**").access("hasRole('MODERATOR') or hasRole('ADMIN')")
         .antMatchers(HttpMethod.POST, "/post/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
         .antMatchers(HttpMethod.POST, "/topic/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
-        .antMatchers(HttpMethod.POST, "/report/**").access("hasRole('MODERATOR') or hasRole('ADMIN')  or hasRole('USER')")
-        .antMatchers(HttpMethod.PUT, "/post/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
-        .antMatchers(HttpMethod.PUT, "/topic/**").access("hasRole('MODERATOR') or hasRole('ADMIN')")
-        .antMatchers(HttpMethod.DELETE, "/topic/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
-        .antMatchers(HttpMethod.DELETE, "/post/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
-        .anyRequest().authenticated();
+        .antMatchers(HttpMethod.POST, "/report/**")
+        .access("hasRole('MODERATOR') or hasRole('ADMIN')  or hasRole('USER')").antMatchers(HttpMethod.PUT, "/post/**")
+        .access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')").antMatchers(HttpMethod.PUT, "/topic/**")
+        .access("hasRole('MODERATOR') or hasRole('ADMIN')").antMatchers(HttpMethod.DELETE, "/topic/**")
+        .access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
+        .antMatchers(HttpMethod.DELETE, "/post/**")
+        .access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')").anyRequest().authenticated();
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 }

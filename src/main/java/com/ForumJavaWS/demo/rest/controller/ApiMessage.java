@@ -1,5 +1,6 @@
 package com.ForumJavaWS.demo.rest.controller;
 
+// création de message d'erreur
 public class ApiMessage {
 
     public static final Integer REGISTER_OK = 1;

@@ -26,12 +26,14 @@ public class CategoryController { // READ ONLY
     @Autowired
     private TopicRepository topicRepository;
 
+    // Fonctioon permettant de récupérer toutes les catégories
     @ResponseBody
     @GetMapping("/category")
     public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
 
+    // Fonction permettant de récupérer une seule catégorie
     @ResponseBody
     @GetMapping("/category/{categoryId}")
     public Category getCategoryById(final @PathVariable("categoryId") Long categoryId) {
@@ -42,6 +44,7 @@ public class CategoryController { // READ ONLY
         }
     }
 
+    // Fonction permettant de récupérer l'ensemble des topics d'une catégorie
     @ResponseBody
     @GetMapping("/category/{categoryId}/topics")
     public Page<Topic> getTopicsByCategory(final @PathVariable("categoryId") Long categoryId, Pageable pageable) {
@@ -49,7 +52,8 @@ public class CategoryController { // READ ONLY
         return topicRepository.findByCategoryOrderByTitle(category, pageable);
     }
 
-    // il manque l'ID du topic et l'ID
+    // Fonction permettant de créer un topics relié à une catégorie, et d'y integrer
+    // le premier post
     @PostMapping("/category/{categoryId}")
     public Topic addTopicToCategory(final @PathVariable("categoryId") Long id, final @RequestBody Topic topic) {
         Category category = categoryRepository.findById(id);

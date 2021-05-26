@@ -42,7 +42,8 @@ public class ForumJavaWsApplication {
 
 	@PostConstruct
 	void init() {
-
+		// création des différents rôles necessaire à l'application, lorsqu'ils sont
+		// déjà en base de données, ils ne sont pas recréer au lancement
 		if (userRepository.findAll().size() == 0) {
 			Role adminRole = roleRepository.save(new Role(EnumRole.ROLE_ADMIN));
 			roleRepository.save(new Role(EnumRole.ROLE_USER));
@@ -56,7 +57,8 @@ public class ForumJavaWsApplication {
 			admin.setRoles(roles);
 			userRepository.save(admin);
 		}
-
+		// création des différentes catégories,lorsqu'ils sont
+		// déjà en base de données, ils ne sont pas recréer au lancement
 		List<String> themes = new ArrayList<>(
 				Arrays.asList("Mathématiques", "Informatique", "Astronomie", "Ingénierie"));
 		if (categoryRepository.findAll().size() <= 3) {

@@ -20,23 +20,26 @@ public class ReportController {
     @Autowired
     private ReportRepository reportRepository;
 
+    // Fonction permettant de récuperer un signalement
     @ResponseBody
     @GetMapping("/report/{reportId}")
-    public Report getReportById(final @PathVariable("reportId") Long reportId){
+    public Report getReportById(final @PathVariable("reportId") Long reportId) {
         Report report = reportRepository.findById(reportId);
         return report;
     }
 
+    // Fonction permettant de signaler tout les signalements
     @ResponseBody
     @GetMapping("/report")
-    public List<Report> getReports(){
+    public List<Report> getReports() {
         return reportRepository.findAll();
     }
 
+    // Fonction permettant de faire un signalement
     @PostMapping("/report")
-    public Report addreport(@RequestBody Report report) throws Exception{
+    public Report addreport(@RequestBody Report report) throws Exception {
         System.out.println("report : " + report.getPost());
-        if (report.getPost() != null){
+        if (report.getPost() != null) {
             report.setUser(UserDetailsServiceImpl.getCurrentUser());
             return reportRepository.save(report);
         } else {

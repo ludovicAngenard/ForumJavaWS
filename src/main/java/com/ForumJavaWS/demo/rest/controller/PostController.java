@@ -26,6 +26,7 @@ public class PostController {
     @Autowired
     private ReportRepository reportRepository;
 
+    // Fonction permettant de récupérer un post
     @ResponseBody
     @GetMapping("/post/{postId}")
     public Post getPostById(final @PathVariable("postId") Long postId) {
@@ -33,6 +34,7 @@ public class PostController {
         return post;
     }
 
+    // Fonction permettant de supprimer un post
     @DeleteMapping("/post/{postId}")
     public void deletePostById(final @PathVariable("postId") Long postId) {
         Post post = postRepository.findById(postId);
@@ -43,6 +45,7 @@ public class PostController {
         }
     }
 
+    // Fonction permettant de modifier un post, il ajoute un "update at"
     @PutMapping("/post/{id}")
     public Post editPost(@PathVariable("id") Long id, @RequestBody PostResponse postResponse) {
         Post post = this.postRepository.findById(id);
@@ -53,6 +56,7 @@ public class PostController {
         return this.postRepository.save(post);
     }
 
+    // Fonction permettant de signaler un post
     @GetMapping("/post/{postId}/reports")
     public Page<Report> getReportsByPost(final @PathVariable("postId") Long postId, Pageable pageable) {
         Post post = postRepository.findById(postId);

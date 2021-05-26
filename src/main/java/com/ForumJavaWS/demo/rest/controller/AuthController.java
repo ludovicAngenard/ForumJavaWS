@@ -55,6 +55,7 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
+  // Fonction permettant de se connecter
   @PostMapping("login")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
     try {
@@ -73,6 +74,7 @@ public class AuthController {
     }
   }
 
+  // Fonction permettant de créer un utilisateur USER
   @PostMapping("register")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (signUpRequest.getEmail() == null) {
@@ -95,6 +97,7 @@ public class AuthController {
     return ResponseEntity.ok(new MessageResponse(ApiMessage.REGISTER_OK, "Utilisateur inscrit avec succès !"));
   }
 
+  // Fonction permettant de créer un modérateur seulement en tant qu'Admin
   @PostMapping("register/moderator")
   public ResponseEntity<?> admin(@Valid @RequestBody SignupRequest signUpRequest) {
     if (UserDetailsServiceImpl.isAdmin()) {
@@ -119,15 +122,17 @@ public class AuthController {
     }
   }
 
+  // Fonction permettant de supprimer un modérateur seulement en tant qu'Admin
   @DeleteMapping("/moderator/{moderatorId}")
-    public void deletePostById(final @PathVariable("moderatorId") Long userId) {
+  public void deletePostById(final @PathVariable("moderatorId") Long userId) {
+    if (UserDetailsServiceImpl.isAdmin()) {
       User user = userRepository.findById(userId);
-      for (Role role :  user.getRoles()) {
-        if (role.getName() == EnumRole.ROLE_MODERATOR){
+      for (Role role : user.getRoles()) {
+        if (role.getName() == EnumRole.ROLE_MODERATOR) {
           User moderator = user;
           userRepository.delete(moderator);
         }
       }
     }
-
+  }
 }

@@ -19,16 +19,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
   UserRepository userRepository;
 
+  // Fonction permettant de récupérer les informations d'un compte par son mail
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
+    User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
     return UserDetailsImpl.build(user);
   }
 
-  /**
-   * @return
-   */
+  // Fonction permettant de récuperer les informations du compte connecté
   public static User getCurrentUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -37,17 +37,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return user;
   }
 
-  /**
-   * @return
-   */
+  // Fonction permettant de s'assurer que l'utilisateur connecté est un admin
   public static boolean isAdmin() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication.getAuthorities().stream().filter(r -> r.getAuthority().equals(EnumRole.ROLE_ANONYMOUS.toString())).count() == 1) {
+    if (authentication.getAuthorities().stream()
+        .filter(r -> r.getAuthority().equals(EnumRole.ROLE_ANONYMOUS.toString())).count() == 1) {
       return false;
     }
 
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    GrantedAuthority grantedAuthority = userDetails.getAuthorities().stream().filter(r -> r.getAuthority().equals(EnumRole.ROLE_ADMIN.toString())).findFirst().orElse(null);
+    GrantedAuthority grantedAuthority = userDetails.getAuthorities().stream()
+        .filter(r -> r.getAuthority().equals(EnumRole.ROLE_ADMIN.toString())).findFirst().orElse(null);
     return grantedAuthority != null;
   }
 
