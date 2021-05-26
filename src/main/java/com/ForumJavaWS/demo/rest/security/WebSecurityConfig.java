@@ -7,6 +7,7 @@ import com.ForumJavaWS.demo.rest.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -54,8 +55,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-        .antMatchers("/home/**").permitAll().antMatchers("/auth/**").permitAll().antMatchers("/artist/**").permitAll()
-        .antMatchers("/album/**").permitAll().antMatchers("/track/**").permitAll().anyRequest().authenticated();
+        .antMatchers("/auth/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/topic/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/post/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/category/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/report/**").access("hasRole('MODERATOR') or hasRole('ADMIN')")
+        .antMatchers(HttpMethod.POST, "/post/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
+        .antMatchers(HttpMethod.POST, "/topic/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
+        .antMatchers(HttpMethod.POST, "/report/**").access("hasRole('MODERATOR') or hasRole('ADMIN')  or hasRole('USER')")
+        .antMatchers(HttpMethod.PUT, "/post/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
+        .antMatchers(HttpMethod.PUT, "/topic/**").access("hasRole('MODERATOR') or hasRole('ADMIN')")
+        .antMatchers(HttpMethod.DELETE, "/topic/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
+        .antMatchers(HttpMethod.DELETE, "/post/**").access("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
+        .anyRequest().authenticated();
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 }

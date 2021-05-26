@@ -30,11 +30,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 @RequestMapping("auth")
@@ -97,6 +98,9 @@ public class AuthController {
   @PostMapping("register/moderator")
   public ResponseEntity<?> admin(@Valid @RequestBody SignupRequest signUpRequest) {
     if (UserDetailsServiceImpl.isAdmin()) {
+      if (signUpRequest.getEmail() == null) {
+        return ResponseEntity.ok().body(new MessageResponse(ApiMessage.ERROR_LOGIN_FAILED, "veuillez entrer un email"));
+      }
       if (userRepository.existsByEmail(signUpRequest.getEmail())) {
         return ResponseEntity.ok()
             .body(new MessageResponse(ApiMessage.ERROR_REGISTER_EMAIL_TAKEN, "L'adresse email est déjà prise"));
@@ -114,5 +118,16 @@ public class AuthController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
   }
+
+  @DeleteMapping("/moderator/{moderatorId}")
+    public void deletePostById(final @PathVariable("moderatorId") Long userId) {
+      User user = userRepository.findById(userId);
+      for (Role role :  user.getRoles()) {
+        if (role.getName() == EnumRole.ROLE_MODERATOR){
+          User moderator = user;
+          userRepository.delete(moderator);
+        }
+      }
+    }
 
 }
