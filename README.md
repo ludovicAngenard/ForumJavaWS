@@ -28,6 +28,7 @@ Mise en place de l'application :
         "email":"ludovic.angenard@campus.academy",
         "password":"123456"
     }
+    Attention ! il faut bien copier coller le token récupéré lors d'un login dans chacune des requetes à effectuer avec le compte en question.
 
 
 Notre parcours :
@@ -49,8 +50,8 @@ nous étions parti sur une phase en deux étapes dans le TopicController, la 1er
 Finalement nous avons trouver le moyen de créer le Topic à partir de CategoryController, afin qu'il soit directement relié à une catégorie tout en créant un post relié au Topic créer dans la même requete.
 
 (bien évidemment nous avons du modifier les entity pour y ajouter des cascades, fetchTypes etc ...)
-Nous avons eu un blocage sur le fait que les Types demandés par le cahier des charges étaient des Long et non pas des ID,
-pour contourner ce problème, nous avons du modifier les Int en Long dans les repositorys
+Nous avons eu un blocage sur le fait que les Types demandés par le cahier des charges étaient des Long et non pas des Integer,
+pour contourner ce problème, nous avons utilisé le polymorphysme.
 
 Par la suite, Nous nous sommes attaqués au Post, qui nous ont semblé plus facile que Topic car nous avons compris un certain nombre d'élément en ayant travaillé sur la gestion des Topic.
 
