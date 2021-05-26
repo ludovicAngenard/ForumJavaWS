@@ -14,18 +14,19 @@ Samuel Wroblewski
 
 1. Cloner le repository git.
 
-2. Créer une base de donnée sur PHPMyAdmin au nom de : forumjavaws avec un user root et aucun mot de passe. Votre base de données doit être sur le port 3308. Pour changer les paramètres par défauts veuillez les changer localement dans [application.properties](src/main/ressources/application.properties) .
+2. Créer une base de donnée sur PHPMyAdmin au nom de : forumjavaws avec un user root et aucun mot de passe. Votre base de données doit être sur le port 3308. Pour changer les paramètres par défauts veuillez les changer localement dans [application.properties](src/main/resources/application.properties) .
 
-3. Lancer le fichier : [ForumJavaWsApplication.java](src/main/java/com/ForumJavaWS/demo/ForumJavaWsApplication.java) L'application va créer les tables de la base de donnée et créer automatiquement 4 catégories ainsi que les différents rôles. si besoin, vous trouverez un dump sql [ici](src/main/ressources/forumjavaws.sql)
+3. Lancer le fichier : [ForumJavaWsApplication.java](src/main/java/com/ForumJavaWS/demo/ForumJavaWsApplication.java) L'application va créer les tables de la base de donnée et créer automatiquement 4 catégories ainsi que les différents rôles. si besoin, vous trouverez un dump sql [ici](src/main/resources/forumjavaws.sql)
 
-4. ouvrir PostMan et y importer la collection [collection](src/main/ressources/postmanCollection.json). pour s'inscrire en tant qu'ADMIN :
+4. ouvrir PostMan et y importer la collection [collection](src/main/resources/postmanCollection.json). pour s'inscrire en tant qu'ADMIN :
 ```
     {
         "email":"ludovic.angenard@campus.academy",
         "password":"123456"
     }
 ```
-    Attention ! il faut bien vérifier que le token générer lors de la connexion est dans la variable d'environnement {{token}}.
+
+Attention ! il faut bien vérifier que le token générer lors de la connexion est dans la variable d'environnement {{token}}.
 
 
 ## Notre parcours :
