@@ -30,13 +30,13 @@ public class Report {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private ReportReason reason;
+    private EnumReportReason reason;
 
     public Report() {
 
     }
 
-    public Report(ReportReason reason) {
+    public Report(EnumReportReason reason) {
         this.reason = reason;
     }
 
@@ -64,11 +64,11 @@ public class Report {
         this.post = post;
     }
 
-    public ReportReason getReason() {
+    public EnumReportReason getReason() {
         return reason;
     }
 
-    public void setReason(ReportReason reason) {
+    public void setReason(EnumReportReason reason) {
         this.reason = reason;
     }
 

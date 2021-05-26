@@ -34,7 +34,7 @@ public class Topic {
     @JsonIgnore
     private Category category;
 
-    @OneToMany( mappedBy="topic",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts  = new ArrayList<>();
 
     public Long getId() {
@@ -75,6 +75,14 @@ public class Topic {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 

@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "user", uniqueConstraints = { @UniqueConstraint(columnNames = "email") })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = "email") })
 public class User {
 
     @Id
@@ -34,7 +34,7 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> role = new HashSet<>();
 
-    private Boolean locked;
+    private Boolean locked = false;
 
     public Long getId() {
         return id;

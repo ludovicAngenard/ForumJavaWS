@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -34,10 +35,10 @@ public class Post {
     private Topic topic;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany( cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Report> reports;
 
     public void setId(Long id) {

@@ -29,8 +29,7 @@ public class ForumJavaWsApplication {
 	@Autowired
 	PasswordEncoder encoder;
 
-	public ForumJavaWsApplication(CategoryRepository categoryRepository, UserRepository userRepository,
-			RoleRepository roleRepository) {
+	public ForumJavaWsApplication(CategoryRepository categoryRepository, UserRepository userRepository, RoleRepository roleRepository) {
 		this.categoryRepository = categoryRepository;
 		this.roleRepository = roleRepository;
 		this.userRepository = userRepository;

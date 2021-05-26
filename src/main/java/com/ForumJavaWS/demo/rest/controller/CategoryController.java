@@ -7,6 +7,7 @@ import com.ForumJavaWS.demo.rest.entity.Category;
 import com.ForumJavaWS.demo.rest.entity.Topic;
 import com.ForumJavaWS.demo.rest.repository.CategoryRepository;
 import com.ForumJavaWS.demo.rest.repository.TopicRepository;
+import com.ForumJavaWS.demo.rest.security.service.UserDetailsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -61,10 +62,12 @@ public class CategoryController { // READ ONLY
             category.getTopics().add(topic);
             topic.setLocked(false);
             topic.setCategory(category);
+            topic.setUser(UserDetailsServiceImpl.getCurrentUser());
             topic.getPosts().forEach(post -> {
                 Date date = new Date();
                 post.setTopic(topic);
                 post.setCreatedAt(date);
+                post.setUser(UserDetailsServiceImpl.getCurrentUser());
             });
             categoryRepository.save(category);
 

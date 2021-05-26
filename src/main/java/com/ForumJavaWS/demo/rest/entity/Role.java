@@ -9,13 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Entité Album persistente en base de données.
- *
- * @author Matthieu BACHELIER
- * @since 2021
- * @version 1.0
- */
 @Entity
 @Table(name = "role")
 public class Role {
