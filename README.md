@@ -26,7 +26,7 @@ Samuel Wroblewski
     }
 ```
 
-Attention ! il faut bien vérifier que le token générer lors de la connexion est dans la variable d'environnement {{token}}.
+Attention ! il faut bien vérifier que le token généré lors de la connexion est dans la variable d'environnement {{token}}.
 
 
 ## Notre parcours :
